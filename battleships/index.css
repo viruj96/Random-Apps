@@ -1,0 +1,52 @@
+#startBlock {
+	background-color: black;
+	height: 100vh;
+	left: 50%;
+	margin-right: -50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 100vw;
+}
+
+#start {
+	background-color: darkturquoise;
+	border-radius: 50%;
+	cursor: pointer;
+	font-size: x-large;
+	left: 50%;
+	margin-right: -50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	padding: 5vh;
+	transition: all 1s ease-in-out;
+}
+
+#start:hover {
+	left: 50%;
+	margin-right: -50%;
+	position: absolute;
+	top: 50%;
+	transform: scale(1.1) translate(-50%, -50%);
+}
+
+canvas {
+	left: 50%;
+	margin-right: -50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#fg {
+	z-index: 2;
+}
+
+#bg {
+	z-index: 1;
+}
+
+#text {
+	z-index: 0;
+}
