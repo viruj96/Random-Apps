@@ -40,36 +40,20 @@ const SHIPS = [
 	}
 ];
 const N_SHIPS = SHIPS.length;
-let computerScore = 0, playerScore = 0;
-let computerShips = [...SHIPS], playerShips = [];
-let isPlayerTurn = true;
-let availableShips = [...SHIPS]; // used to list ships at start of game
+let computerScore, playerScore;
+let computerShips, playerShips;
+let isPlayerTurn;
+let availableShips; // used to list ships at start of game
 let selectedShip;
-let boundary = []; // click box for selecting ships
+let isInvalidShipPosition;
+let boundary; // click box for selecting ships
 
 const HIT_POINTS = 10;
 const DESTROYED_POINTS = 2 * HIT_POINTS;
-let isGameOver = false;
-const shotLogs = []; // user shot records. only 10 most recent kept
+let isGameOver, gameOverMessage, hasGameStarted;
+let shotLogs; // user shot records. only 10 most recent kept
 
-let BOARD = [
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-];
+let BOARD;
 
 window.onload = () => {
 	// Get canvas elements and set height and width variables 
@@ -87,24 +71,66 @@ window.onload = () => {
 	BG_WIDTH = canvasBg.width;
 	BG_HEIGHT = canvasBg.height;
 
+	canvasFg.oncontextmenu = (e) => { e.preventDefault(); };
 	canvasFg.addEventListener('mousemove', updateMousePos);
-	initComputerPosition();
 }
 
 function startGame() {
 	document.getElementById('startBlock').style.display = 'none';
 	document.getElementById('game').style.display = 'block';
 
+	isGameOver = false;
+	gameOverMessage = '';
+	hasGameStarted = false;
+	isInvalidShipPosition = false;
+	computerScore = 0;
+	playerScore = 0;
+	computerShips = [...SHIPS];
+	playerShips = [];
+	isPlayerTurn = true;
+	availableShips = [...SHIPS]
+	boundary = [];
+	shotLogs = []
+
+	BOARD = [
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	];
+	initComputerPosition();
+
+	let startGameCheck;
 	const FPS = 25;
 	setInterval(() => {
+		if (!hasGameStarted) {
+			startGameCheck = setInterval(() => {
+				hasGameStarted = playerShips.length === N_SHIPS;
+			}, 500);
+		} else {
+			clearInterval(startGameCheck);
+		}
+
 		render();
 
-		if (playerShips.length !== N_SHIPS) {
-			canvasFg.addEventListener('click', placePlayerShips);
+		if (!hasGameStarted) {
+			canvasFg.addEventListener('mousedown', placePlayerShips);
 			textCanvas.addEventListener('click', pickShip);
 		}
 		else {
-			canvasFg.removeEventListener('click', placePlayerShips);
+			canvasFg.removeEventListener('mousedown', placePlayerShips);
 			textCanvas.removeEventListener('click', pickShip);
 			canvasFg.addEventListener('click', takeShot);
 		}
@@ -131,6 +157,36 @@ function drawScoreBoard() {
 	textCtx.fillText(`Ships remaining: ${playerShips.length}`, 20, 60 + textCanvas.height / 2);
 	drawShotLogs();
 	listAvailableShips();
+	displayInstructions();
+}
+
+function displayInstructions() {
+	if (!hasGameStarted) {
+		textCtx.fillText('Select a ship and', 20, 155 + textCanvas.height / 2);
+		textCtx.fillText('place it on the grid', 20, 175 + textCanvas.height / 2);
+		if (selectedShip) {
+			if (isInvalidShipPosition)
+				textCtx.fillText(`No space for ${selectedShip.name}`, 20, 195 + textCanvas.height / 2);
+			else
+				textCtx.fillText(`Deploying ${selectedShip.name}`, 20, 195 + textCanvas.height / 2);
+		}
+	} else if (!isGameOver) {
+		const diff = (textCanvas.width - canvasBg.width) / 2 - 80;
+		if (isPlayerTurn) {
+			let text = 'ATTACK! 🚀';
+			textCtx.fillText(text, (diff - text.length) / 2, 180 + textCanvas.height / 2);
+		} else {
+			let text = 'INCOMING! ⚠';
+			textCtx.fillText(text, (diff - text.length) / 2, 180);
+		}
+	} else {
+		let text = computerShips.length === 0 ? 'YOU WIN! 😃' : 'YOU LOSE! 😞';
+		let subText = computerShips.length === 0 ? 'Enemy fleet destroyed 💪' : 'You stood no chance 💀';
+		let diff = (textCanvas.width - canvasBg.width) / 2 - 80;
+		textCtx.fillText(text, (diff - text.length) / 2, 170 + textCanvas.height / 2);
+		diff = computerShips.length === 0 ? diff - 80 : diff - 60;
+		textCtx.fillText(subText, (diff - text.length) / 2, 190 + textCanvas.height / 2);
+	}
 }
 
 function drawCellNumbers() {
@@ -158,12 +214,15 @@ function drawGameBoard() {
 		let tileX = 0;
 		for (let j = 0; j < GRID_SIZE; j++) {
 			let colour = 'aqua';
-			if (BOARD[index] === -2)
-				colour = 'darkred';
+			if (BOARD[index] > 0)
+				colour = 'hotpink';
 			else if (BOARD[index] === -1)
 				colour = 'green';
-			else if (BOARD[index] > 0)
-				colour = 'hotpink';
+			else if (BOARD[index] === -2)
+				colour = 'black';
+			else if (BOARD[index] === -3)
+				colour = 'yellow';
+
 			ctxFg.fillStyle = colour;
 			ctxFg.fillRect(tileX, tileY, TILE_WIDTH - 2, TILE_HEIGHT - 2);
 			if (tileY === 8 * TILE_HEIGHT) {
@@ -202,9 +261,10 @@ function pickShip(e) {
 
 	let idx = clickIntersect(pos);
 	selectedShip = availableShips[idx];
+	isInvalidShipPosition = false;
 }
 
-// Check if mouse click is within valid boundary box on text canvas
+// Check if mouse click is within valid boundary box on text canvas to select ship
 function clickIntersect(point) {
 	for (let i = 0; i < boundary.length; i++) {
 		if (point.x >= boundary[i].x && point.y >= boundary[i].y1 && point.y < boundary[i].y2)
@@ -214,7 +274,7 @@ function clickIntersect(point) {
 }
 
 function listAvailableShips() {
-	if (playerShips.length !== N_SHIPS) {
+	if (!hasGameStarted) {
 		const diff = (textCanvas.width - canvasBg.width) / 2 - 20;
 		let prevY = 30 + textCanvas.height / 2;
 		textCtx.fillText('🚢 !!!Deploy your fleet!!! 🚢', textCanvas.width - diff, prevY)
@@ -244,23 +304,70 @@ function listAvailableShips() {
 	}
 }
 
-function placePlayerShips() {
+function placePlayerShips(e) {
 	let row = Math.floor(mouseY / TILE_HEIGHT);
 	let col = Math.floor(mouseX / TILE_WIDTH);
 
 	let index = GRID_SIZE * row + col;
+	let prevState = [...BOARD];
+	const playerShipId = selectedShip.id + N_SHIPS;
+	let tryNext = false;
+	let bothFailed = false;
 
 	if (row >= 8 && BOARD[index] === 0 && selectedShip) {
-		for (let i = 0; i < selectedShip.length; i++) {
-			BOARD[index + i] = selectedShip.id;
+		if (e.button === 0) {
+			if (selectedShip.length + col <= GRID_SIZE) { // Draw left to right
+				for (let i = 0; i < selectedShip.length; i++) {
+					if (BOARD[index + i] !== 0) {
+						tryNext = true;
+						break;
+					}
+					BOARD[index + i] = playerShipId;
+				}
+			} else tryNext = true;
+			if (col - selectedShip.length >= 0 && tryNext) { // Draw right to left
+				for (let i = 0; i < selectedShip.length; i++) {
+					if (BOARD[index - i] !== 0) {
+						bothFailed = true;
+						break;
+					}
+					BOARD[index - i] = playerShipId;
+				}
+			} else if (tryNext) bothFailed = true;
+		} else if (e.button === 2) {
+			if (selectedShip.length + row <= GRID_SIZE) { // Draw top to bottom
+				for (let i = 0; i < selectedShip.length; i++) {
+					if (BOARD[index + i * GRID_SIZE] !== 0) {
+						tryNext = true;
+						break;
+					}
+					BOARD[index + i * GRID_SIZE] = playerShipId;
+				}
+			} else tryNext = true;
+			if (row - selectedShip.length >= GRID_SIZE / 2 && tryNext) { // Draw bottom to top
+				for (let i = 0; i < selectedShip.length; i++) {
+					if (BOARD[index - i * GRID_SIZE] !== 0) {
+						bothFailed = true;
+						break;
+					}
+					BOARD[index - i * GRID_SIZE] = playerShipId;
+				}
+			} else if (tryNext) bothFailed = true;
 		}
-		availableShips = availableShips.filter(ship => ship.id !== selectedShip.id);
-		playerShips.push(selectedShip);
+		let shipsPlaced = BOARD.filter(id => id === playerShipId);
+		if (bothFailed) {
+			BOARD = prevState;
+			isInvalidShipPosition = true;
+		} else if (shipsPlaced.length === selectedShip.length) {
+			availableShips = availableShips.filter(ship => ship.id !== selectedShip.id);
+			playerShips.push(selectedShip);
+			selectedShip = undefined;
+		}
 	}
 }
 
 function initComputerPosition() {
-	let shipsToPlace = SHIPS;
+	let shipsToPlace = [...SHIPS];
 	const SHIP_ORIENTATION = ['h', 'v']; // Place ship horizontally or vertically
 
 	while (shipsToPlace.length > 0) {
@@ -348,15 +455,16 @@ function takeShot() {
 
 				if (hitIndex !== -1) {
 					computerShips[hitIndex].length--;
-					updateScore(hitIndex);
 					BOARD[index] = -1;
 					shotLogs.push(`Shot (${String.fromCharCode(row + 65)}, ${col + 1}) : HIT`);
+					updateScore(hitIndex);
 				} else {
 					BOARD[index] = -2;
 					shotLogs.push(`Shot (${String.fromCharCode(row + 65)}, ${col + 1}) : MISSED`);
 				}
+				console.log(computerShips)
 				isPlayerTurn = false;
-				setTimeout(() => canvasFg.click(), 100);
+				setTimeout(() => canvasFg.click(), 1000);
 			}
 		} else {
 			row = Math.floor((Math.random() * GRID_SIZE / 2)) + GRID_SIZE / 2;
@@ -365,7 +473,7 @@ function takeShot() {
 			let index = GRID_SIZE * row + col;
 
 			if (BOARD[index] !== -1 && BOARD[index] !== -2) {
-				let hitIndex = playerShips.findIndex(ship => ship.id === BOARD[index]);
+				let hitIndex = playerShips.findIndex(ship => ship.id + N_SHIPS === BOARD[index]);
 
 				if (hitIndex !== -1) {
 					playerShips[hitIndex].length--;
@@ -386,6 +494,7 @@ function updateScore(hitIndex) {
 		if (computerShips[hitIndex].length === 0) {
 			playerScore += DESTROYED_POINTS;
 			computerShips = computerShips.filter(ship => ship !== computerShips[hitIndex]);
+			shotLogs.push('Ship sunken 💥');
 		}
 		else {
 			playerScore += HIT_POINTS;
@@ -402,14 +511,29 @@ function updateScore(hitIndex) {
 
 	if (playerShips.length === 0 || computerShips.length === 0) {
 		isGameOver = true;
-		gameOver(computerShips.length === 0);
+		setTimeout(() => {
+			gameOver(computerShips.length === 0);
+		}, 3000);
 	}
 }
 
 function gameOver(playerWins) {
 	if (playerWins) {
-		console.log('Player wins')
+		gameOverMessage = 'Enemy fleet destroyed 💪';
 	} else {
-		console.log('Computer wins')
+		gameOverMessage = 'You stood no chance 💀';
 	}
+
+	document.getElementById('startBlock').style.display = 'block';
+	document.getElementById('game').style.display = 'none';
+	document.getElementById('main').style.display = 'none';
+	document.getElementById('gameOverBlock').style.display = 'block';
+	document.getElementById('message').innerHTML = gameOverMessage;
+}
+
+function resetGame() {
+	document.getElementById('startBlock').style.display = 'block';
+	document.getElementById('game').style.display = 'none';
+	document.getElementById('main').style.display = 'block';
+	document.getElementById('gameOverBlock').style.display = 'none';
 }
