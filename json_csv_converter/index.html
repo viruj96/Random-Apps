@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON ↔ CSV</title>
+    <link rel="stylesheet" type="text/css" href="./styles/style.css" />
+    <script defer src="./js/converter.js"></script>
+    <script type="module" defer src="./js/icons.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>JSON ↔ CSV</h1>
+      <div id="container">
+        <div class="innerContainer">
+          <textarea id="input" class="card" placeholder="Enter JSON or CSV content.."></textarea>
+          <button id="upload" class="outerButton" onclick="uploadFile()" title="Upload file"></button>
+          <input type="file" accept=".csv,.json" style="display: none;" />
+        </div>
+        <div class="innerContainer">
+          <button id="json2csv" onclick="json2csv()" title="Convert JSON to CSV">CSV  >>></button>
+          <button id="csv2json" onclick="csv2json()" title="Convert CSV to JSON">JSON >>></button>
+        </div>
+        <div class="innerContainer">
+          <textarea id="output" class="card" disabled></textarea>
+          <div id="outputDivBtns">
+            <button id="copy" class="outerButton handleOutputBtn" onclick="copyToClipboard()" title="Copy to clipboard"></button>
+            <button id="download" class="outerButton handleOutputBtn" onclick="downloadFile()" title="Download file"></button>
+            <button id="clear" class="outerButton handleOutputBtn" onclick="clearContent()" title="Clear all"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

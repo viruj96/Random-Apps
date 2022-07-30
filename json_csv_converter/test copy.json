@@ -1,0 +1,15 @@
+{
+	"seq": 1,
+	"name": {
+		"first": "Maggie",
+		"last": "Higgins"
+	},
+	"age": 42,
+	"street": "Cakje Junction",
+	"city": "Donecwi",
+	"state": "WY",
+	"zip": 958,
+	"dollar": "$6203.37",
+	"pick": "BLUE",
+	"date": "07/25/2050"
+}
