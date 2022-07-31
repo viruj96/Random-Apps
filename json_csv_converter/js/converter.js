@@ -1,4 +1,4 @@
-import { modalIcons, addIcon } from './icons';
+import { addIcon, modalIcons } from './icons';
 
 export const uploadFile = () => {
 	document.querySelector('input[type=file]').click();
@@ -20,7 +20,7 @@ export const readFile = (e) => {
 	toggleButtons((file.type).split('/')[1]);
 };
 
-const toggleButtons = (fileType) => {
+export const toggleButtons = (fileType) => {
 	if (fileType === 'csv') {
 		document.querySelector('#json2csv').disabled = true;
 		document.querySelector('#csv2json').disabled = false;
@@ -32,9 +32,11 @@ const toggleButtons = (fileType) => {
 	} else if (fileType === 'valid') {
 		document.querySelectorAll('.output-btn').forEach(btn => btn.disabled = false);
 	} else {
-		document.querySelector('#json2csv').disabled = false;
-		document.querySelector('#csv2json').disabled = false;
-		document.querySelectorAll('.output-btn').forEach(btn => btn.disabled = false);
+		document.querySelector('input[type=file]').value = '';
+		document.querySelector('p').innerHTML = 'Upload File';
+		document.querySelectorAll('button').forEach(btn => {
+			btn.disabled = false;
+		});
 	}
 };
 
@@ -64,6 +66,31 @@ export const json2csv = () => {
 		document.querySelector('#output').value = 'Invalid JSON';
 		toggleButtons('invalid');
 		displayModalMessage('warning', 'Invalid JSON');
+	}
+};
+
+export const csv2json = () => {
+	let csv = document.querySelector('#input').value;
+	try {
+		csv = csv.split('\n');
+		let keys = csv.shift();
+		keys = keys.split(',');
+		let json = [];
+		for (let row of csv) {
+			let items = row.split(',');
+			let obj = {};
+			for (let i = 0; i < keys.length; i++) {
+				obj[keys[i]] = items[i];
+			}
+			json.push(obj);
+		}
+		json = JSON.stringify(json, null, 2);
+		document.querySelector('#output').value = json;
+		toggleButtons('valid');
+	} catch {
+		document.querySelector('#output').value = 'Invalid CSV';
+		toggleButtons('invalid');
+		displayModalMessage('warning', 'Invalid CSV');
 	}
 };
 

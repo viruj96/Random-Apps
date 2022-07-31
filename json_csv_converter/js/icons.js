@@ -1,7 +1,7 @@
 import { icon, library } from '@fortawesome/fontawesome-svg-core';
-import { faCircleCheck, faCircleExclamation, faCircleXmark, faCopy, faDownload, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faCircleExclamation, faCopy, faDownload, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faUpload, faDownload, faCopy, faTrash, faCircleCheck, faCircleXmark, faCircleExclamation);
+library.add(faUpload, faDownload, faCopy, faTrash, faCircleCheck, faCircleExclamation);
 
 export const icons = [
 	{
@@ -27,10 +27,6 @@ export const modalIcons = {
 	success: {
 		icon: icon({ prefix: 'fas', iconName: 'circle-check' }),
 		colour: 'green'
-	},
-	error: {
-		icon: icon({ prefix: 'fas', iconName: 'circle-xmark' }),
-		colour: 'red'
 	},
 	warning: {
 		icon: icon({ prefix: 'fas', iconName: 'circle-exclamation' }),

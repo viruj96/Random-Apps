@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JSON ↔ CSV</title>
-    <link rel="stylesheet" type="text/css" href="./styles/style.css" />
-    <script type="module" defer src="./js/main.js"></script>
-  </head>
-  <body>
-    <div id="app">
-      <h1>JSON ↔ CSV</h1>
-      <div id="container">
-        <div class="inner-container">
-          <textarea id="input" class="card" placeholder="Enter JSON or CSV content.."></textarea>
-          <button id="upload" class="outer-button" onclick="uploadFile()" title="Upload file"></button>
-          <input type="file" accept=".csv,.json" style="display: none;" />
-        </div>
-        <div class="inner-container">
-          <button id="json2csv" onclick="json2csv()" title="Convert JSON to CSV">CSV  >>></button>
-          <button id="csv2json" onclick="csv2json()" title="Convert CSV to JSON">JSON >>></button>
-        </div>
-        <div class="inner-container">
-          <textarea id="output" class="card" disabled></textarea>
-          <div id="outer-div-btns">
-            <button id="copy" class="outer-button output-btn" onclick="copyToClipboard()" title="Copy to clipboard" data-modal="message-modal"></button>
-            <button id="download" class="outer-button output-btn" onclick="downloadFile()" title="Download file"></button>
-            <button id="clear" class="outer-button output-btn" onclick="clearContent()" title="Clear all"></button>
-          </div>
-        </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JSON ↔ CSV</title>
+  <link rel="stylesheet" type="text/css" href="./styles/style.css" />
+  <script type="module" defer src="./js/main.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h1>JSON ↔ CSV</h1>
+    <div id="container">
+      <div class="inner-container">
+        <textarea id="input" class="card" placeholder="Enter JSON or CSV content.."></textarea>
+        <button id="upload" class="outer-button" onclick="uploadFile()" title="Upload file"></button>
+        <input type="file" accept=".csv,.json" style="display: none;" />
       </div>
-      <div class="modal" id="message-modal">
-        <div class="modal-bg"></div>
+      <div class="inner-container">
+        <button id="json2csv" onclick="json2csv()" title="Convert JSON to CSV">CSV >>></button>
+        <button id="csv2json" onclick="csv2json()" title="Convert CSV to JSON">JSON >>></button>
+      </div>
+      <div class="inner-container">
+        <textarea id="output" class="card" disabled></textarea>
+        <div id="outer-div-btns">
+          <button id="copy" class="outer-button output-btn" onclick="copyToClipboard()" title="Copy to clipboard"
+            data-modal="message-modal"></button>
+          <button id="download" class="outer-button output-btn" onclick="downloadFile()" title="Download file"></button>
+          <button id="clear" class="outer-button output-btn" onclick="clearContent()" title="Clear all"></button>
+        </div>
       </div>
     </div>
-  </body>
+    <div class="modal" id="message-modal">
+      <div class="modal-bg"></div>
+    </div>
+  </div>
+</body>
+
 </html>
