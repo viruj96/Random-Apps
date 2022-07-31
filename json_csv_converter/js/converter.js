@@ -1,21 +1,15 @@
-window.onload = () => {
-	document.querySelector('input[type=file]').addEventListener('change', readFile);
-	document.querySelector('#input').addEventListener('change', () => {
-		document.querySelector('input[type=file]').value = '';
-		document.querySelector('p').innerHTML = 'Upload File';
-	});
-};
+import { modalIcons, addIcon } from './icons';
 
-const uploadFile = () => {
+export const uploadFile = () => {
 	document.querySelector('input[type=file]').click();
 };
 
-const readFile = (e) => {
-	let file = e.target.files[0];
+export const readFile = (e) => {
+	const file = e.target.files[0];
 
 	document.querySelector('p').innerHTML = file.name;
 
-	let reader = new FileReader();
+	const reader = new FileReader();
 	reader.onload = (() => {
 		return (e) => {
 			document.querySelector('#input').value = e.target.result;
@@ -34,13 +28,17 @@ const toggleButtons = (fileType) => {
 		document.querySelector('#json2csv').disabled = false;
 		document.querySelector('#csv2json').disabled = true;
 	} else if (fileType === 'invalid') {
-		document.querySelectorAll('.handleOutputBtn').forEach(btn => btn.disabled = true);
+		document.querySelectorAll('.output-btn:not(:last-child)').forEach(btn => btn.disabled = true);
 	} else if (fileType === 'valid') {
-		document.querySelectorAll('.handleOutputBtn').forEach(btn => btn.disabled = false);
+		document.querySelectorAll('.output-btn').forEach(btn => btn.disabled = false);
+	} else {
+		document.querySelector('#json2csv').disabled = false;
+		document.querySelector('#csv2json').disabled = false;
+		document.querySelectorAll('.output-btn').forEach(btn => btn.disabled = false);
 	}
 };
 
-const json2csv = () => {
+export const json2csv = () => {
 	let json = document.querySelector('#input').value;
 	try {
 		json = JSON.parse(json);
@@ -53,19 +51,73 @@ const json2csv = () => {
 		} else {
 			csvHeader = Object.keys(json[0]);
 			for (let o of json) {
-				let values = Object.values(o);
+				const values = Object.values(o);
 				values[values.length - 1] = values[values.length - 1] + '\n';
 				csvValue.push(...values);
 			}
 		}
 		csvHeader[csvHeader.length - 1] = csvHeader[csvHeader.length - 1] + '\n';
-		let csv = csvHeader.join() + csvValue.join();
+		const csv = csvHeader.join() + csvValue.join();
 		document.querySelector('#output').value = csv;
 		toggleButtons('valid');
 	} catch {
 		document.querySelector('#output').value = 'Invalid JSON';
 		toggleButtons('invalid');
+		displayModalMessage('warning', 'Invalid JSON');
 	}
+};
+
+export const copyToClipboard = () => {
+	const copyText = document.querySelector('#output');
+	copyText.select();
+	navigator.clipboard.writeText(copyText.value);
+	displayModalMessage('success', 'Output copied to clipboard');
+};
+
+export const clearContent = () => {
+	const textareas = document.querySelectorAll('textarea');
+	textareas.forEach(area => area.value = '');
+	toggleButtons();
+}
+
+export const downloadFile = () => {
+	let fileType = 'text/plain';
+	if (document.querySelector('#csv2json').disabled)
+		fileType = 'text/csv';
+	else if (document.querySelector('#json2csv').disabled)
+		fileType = 'application/json';
+	const output = document.querySelector('#output').value;
+	const blob = new Blob([output], { type: fileType });
+	const downloadUrl = window.URL.createObjectURL(blob);
+
+	const downloadLink = document.createElement('a');
+	downloadLink.download = 'converted_file';
+	downloadLink.innerHTML = 'Download File';
+	downloadLink.href = downloadUrl;
+	downloadLink.onclick = destroyClickedElement;
+	downloadLink.style.display = 'none';
+	document.body.appendChild(downloadLink);
+
+	downloadLink.click();
+};
+
+const destroyClickedElement = (e) => {
+	document.body.removeChild(e.target);
+};
+
+const displayModalMessage = (type, message) => {
+	const modal = document.getElementById(document.querySelector('[data-modal]').dataset.modal);
+	modal.classList.add('open');
+	const content = document.createElement('div');
+	content.className = 'modal-container';
+	modal.appendChild(content);
+	addIcon(modalIcons[type].icon, '.modal-container', message);
+	document.querySelector('.modal-bg').style.backgroundColor = modalIcons[type].colour;
+	setTimeout(() => {
+		modal.removeChild(content);
+		modal.classList.remove('open');
+		clearTimeout();
+	}, 1000);
 };
 
 const isIterable = (obj) => {

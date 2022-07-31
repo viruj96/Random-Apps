@@ -1,37 +1,51 @@
 import { icon, library } from '@fortawesome/fontawesome-svg-core';
-import { faCopy, faDownload, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faCircleExclamation, faCircleXmark, faCopy, faDownload, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faUpload, faDownload, faCopy, faTrash);
+library.add(faUpload, faDownload, faCopy, faTrash, faCircleCheck, faCircleXmark, faCircleExclamation);
 
-const icons = [
+export const icons = [
 	{
 		icon: icon({ prefix: 'fas', iconName: 'upload' }),
-		button: 'upload',
+		button: '#upload',
 		text: 'Upload File'
 	},
 	{
 		icon: icon({ prefix: 'fas', iconName: 'download' }),
-		button: 'download'
+		button: '#download'
 	},
 	{
 		icon: icon({ prefix: 'fas', iconName: 'copy' }),
-		button: 'copy'
+		button: '#copy'
 	},
 	{
 		icon: icon({ prefix: 'fas', iconName: 'trash' }),
-		button: 'clear'
+		button: '#clear'
 	}
 ];
 
-const addIcon = (icon, button, text) => {
+export const modalIcons = {
+	success: {
+		icon: icon({ prefix: 'fas', iconName: 'circle-check' }),
+		colour: 'green'
+	},
+	error: {
+		icon: icon({ prefix: 'fas', iconName: 'circle-xmark' }),
+		colour: 'red'
+	},
+	warning: {
+		icon: icon({ prefix: 'fas', iconName: 'circle-exclamation' }),
+		colour: 'orange'
+	}
+}
+
+export const addIcon = (icon, button, text) => {
+	const elem = document.querySelector(button);
 	Array.from(icon.node).map(n => {
-		document.getElementById(button).appendChild(n);
+		elem.appendChild(n);
 		if (text) {
 			let p = document.createElement('p');
 			p.innerText = text;
-			document.getElementById(button).appendChild(p);
+			elem.appendChild(p);
 		}
 	});
 };
-
-icons.forEach(icon => addIcon(icon.icon, icon.button, icon.text));
