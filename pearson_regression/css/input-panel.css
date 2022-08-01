@@ -1,0 +1,91 @@
+#input-panel {
+	height: 50vh;
+	width: 30vw;
+}
+
+#input-container {
+	position: relative;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}
+
+#input-table {
+	border: 2px solid black;
+	box-shadow: 1px 1px 10px 2px black;
+	max-height: 35vh;
+	width: 100%;
+	overflow-y: scroll;
+}
+
+table {
+	border-collapse: collapse;
+	table-layout: fixed;
+	height: 100%;
+	width: 100%;
+}
+
+thead {
+	background-color: darkslategray;
+	color: white;
+	position: sticky;
+	top: 0;
+	white-space: nowrap;
+}
+
+tr th:first-child {
+	width: 30px;
+}
+
+tbody tr:nth-child(even) {
+	background-color: lightblue;
+}
+
+tbody tr:nth-child(odd) {
+	background-color: lightgrey;
+}
+
+td {
+	color: black;
+	text-align: center;
+}
+
+input:not(input[type=radio]) {
+	box-sizing: border-box;
+	width: 100%;
+	text-align: center;
+}
+
+#table-params {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#file {
+	position: absolute;
+	bottom: 5vh;
+	left: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+#file button {
+	width: auto;
+	white-space: nowrap;
+}
+
+#button-container {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
