@@ -1,6 +1,18 @@
 body {
 	background: linear-gradient(to right, #536976, #292e49);
 	color: azure;
+	max-height: 100vh;
+}
+
+::-webkit-scrollbar {
+	width: 15px;
+	background: linear-gradient(to right, #ada996, #f2f2f2, #dbdbdb, #eaeaea);
+}
+
+::-webkit-scrollbar-thumb {
+	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+	background-color: #4e1515;
 }
 
 #title {
@@ -15,7 +27,7 @@ body {
 	flex-direction: row;
 	align-items: flex-start;
 	justify-content: flex-start;
-	height: calc(90vh - 8px);
+	height: calc(94vh - 8px - 2em);
 	width: calc(100vw - 2vh - 8px);
 }
 
@@ -24,15 +36,21 @@ body {
 	width: 30vw;
 }
 
-#log-panel textarea {
+#textarea {
 	background: linear-gradient(to right, #ada996, #f2f2f2, #dbdbdb, #eaeaea);
+	border: 1px solid lightgray;
 	border-radius: 5px;
-	resize: none;
-	height: 100%;
+	padding-top: 2%;
+	height: 98%;
 	width: 100%;
+	overflow-y: auto;
 }
 
-#right {
-	height: calc(93vh - 8px - 2em);
+#left-container {
+	height: 100%;
+}
+
+#right-container {
+	height: calc(93vh - 10px - 2em);
 	width: calc(65vw - 8px);
 }

@@ -37,17 +37,26 @@ tr th:first-child {
 	width: 30px;
 }
 
-tbody tr:nth-child(even) {
+tbody tr {
+	cursor: pointer;
+	user-select: none;
+}
+
+tbody tr:nth-child(even):not(.highlighted) {
 	background-color: lightblue;
 }
 
-tbody tr:nth-child(odd) {
+tbody tr:nth-child(odd):not(.highlighted) {
 	background-color: lightgrey;
 }
 
 td {
 	color: black;
 	text-align: center;
+}
+
+tbody .highlighted {
+	background-color: hotpink;
 }
 
 input:not(input[type=radio]) {
