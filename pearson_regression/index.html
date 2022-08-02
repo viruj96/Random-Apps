@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="./css/output-panel.css" />
 	<script src="./js/helper.js"></script>
 	<script src="./js/inputs.js"></script>
+	<script defer src="./js/listeners.js"></script>
 	<!-- <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
 </head>
 
@@ -19,7 +20,7 @@
 		<h1>Pearson Regression</h1>
 	</div>
 	<div id="container">
-		<div>
+		<div id="left-container">
 			<fieldset id="input-panel">
 				<legend>Input Panel</legend>
 				<div id="input-container">
@@ -52,20 +53,26 @@
 					<div id="file">
 						<input type="file" accept="text/csv,.xlsx" hidden />
 						<input type="text" id="file-path" style="text-align: left;" />
-						<button onclick="importData()">Import Data</button>
+						<button onclick="importData()">Import File</button>
 					</div>
 					<div id="button-container">
-						<button id="add" onclick="addRow()">Add Row</button>
-						<button id="calc" onclick="calculate()" disabled>Calculate</button>
+						<div>
+							<button id="add" onclick="addRow()">Add Row</button>
+							<button id="delete" onclick="deleteRow()" disabled>Delete Row(s)</button>
+						</div>
+						<div>
+							<button id="validate" onclick="parseData()">Process Data</button>
+							<button id="calc" onclick="calculate()" disabled>Calculate</button>
+						</div>
 					</div>
 				</div>
 			</fieldset>
 			<fieldset id="log-panel">
 				<legend>Log Panel</legend>
-				<textarea disabled></textarea>
+				<div id="textarea"></div>
 			</fieldset>
 		</div>
-		<div id="right">
+		<div id="right-container">
 			<fieldset id="output-panel">
 				<legend>Output Panel</legend>
 			</fieldset>
