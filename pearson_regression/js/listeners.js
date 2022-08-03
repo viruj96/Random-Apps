@@ -1,8 +1,14 @@
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 const observer = new MutationObserver(() => {
 	const rows = $$('#data-table tbody tr');
-	if (!rows || rows.length === 0) toggle('#delete', 'disabled', true);
-	else toggle('#delete', 'disabled', false);
+	if (!rows || rows.length === 0) {
+		toggle('#delete', 'disabled', true);
+		toggle('#validate', 'disabled', true);
+	}
+	else {
+		toggle('#delete', 'disabled', false);
+		toggle('#validate', 'disabled', false);
+	}
 });
 observer.observe($('#data-table tbody'), {
 	childList: true
