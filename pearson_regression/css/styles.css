@@ -36,12 +36,21 @@ body {
 	width: 30vw;
 }
 
+#log {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: space-between;
+	height: 100%;
+	width: 100%;
+}
+
 #textarea {
 	background: linear-gradient(to right, #ada996, #f2f2f2, #dbdbdb, #eaeaea);
 	border: 1px solid lightgray;
 	border-radius: 5px;
 	padding-top: 2%;
-	height: 98%;
+	height: 80%;
 	width: 100%;
 	overflow-y: auto;
 }
