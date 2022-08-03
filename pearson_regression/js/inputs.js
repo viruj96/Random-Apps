@@ -11,7 +11,6 @@ function addRow() {
 	}
 	const tr = tbody.insertRow(nRows);
 	const thCount = $$('th').length;
-	const attr = [$('input[name=x-data]:checked').value, $('input[name=y-data]:checked').value];
 	for (let i = 0; i < thCount; i++) {
 		const td = tr.insertCell(i);
 		if (i === 0) {
@@ -20,9 +19,8 @@ function addRow() {
 		} else {
 			const input = create('input');
 			css(input, { 'background': 'transparent' });
-			input.setAttribute('type', attr[i - 1]);
-			if (attr[i - 1] === 'number')
-				input.setAttribute('step', '0.01');
+			input.setAttribute('type', 'number');
+			input.setAttribute('step', '0.01');
 			td.appendChild(input);
 		}
 	}

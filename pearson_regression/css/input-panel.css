@@ -13,7 +13,7 @@
 #input-table {
 	border: 2px solid black;
 	box-shadow: 1px 1px 10px 2px black;
-	max-height: 35vh;
+	max-height: 36.5vh;
 	width: 100%;
 	overflow-y: scroll;
 }
