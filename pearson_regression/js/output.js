@@ -33,4 +33,31 @@ function getDegreeOfCorrelation(correlation) {
 	return degree;
 }
 
+// Statistics
+function populateResultsTable(data, r) {
+	let x = data.map(d => d.x);
+	let y = data.map(d => d.y);
+
+	$('#nx').innerText = x.length;
+	$('#ny').innerText = y.length;
+
+	$('#mux').innerText = average(x).toFixed(2);
+	$('#muy').innerText = average(y).toFixed(2);
+
+	$('#sdx').innerText = sd(x).toFixed(2);
+	$('#sdy').innerText = sd(y).toFixed(2);
+
+	$('#semx').innerText = sem(x).toFixed(2);
+	$('#semy').innerText = sem(y).toFixed(2);
+
+	$('#Ex').innerText = E(x).toFixed(2);
+	$('#Ey').innerText = E(y).toFixed(2);
+
+	$('#se').innerText = se(x, y).toFixed(2);
+	$('#tc').innerText = t(x, y).toFixed(2);
+	$('#dof').innerText = dof(x, y).toFixed(2);
+
+	$('#r').innerText = r.toFixed(2);
+}
+
 // Plots

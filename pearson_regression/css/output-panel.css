@@ -2,3 +2,34 @@
 	height: 100%;
 	width: 100%;
 }
+
+#findings {
+	margin: 1%;
+}
+
+#results {
+	height: 100%;
+	width: 100%;
+}
+
+#visualizations {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: space-between;
+	height: 100%;
+	width: 100%;
+}
+
+#graphs {
+	height: calc(88vh - 10px - 4% - 4em);
+	width: 100%;
+}
+
+#stats {
+	width: 30%
+}
+
+#stats-table tbody tr {
+	cursor: default;
+}

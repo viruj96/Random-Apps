@@ -33,7 +33,7 @@ thead {
 	white-space: nowrap;
 }
 
-tr th:first-child {
+#data-table tr th:first-child {
 	width: 30px;
 }
 

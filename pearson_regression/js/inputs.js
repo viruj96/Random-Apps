@@ -10,7 +10,7 @@ function addRow() {
 		rowNumber = parseInt(lastRow.id) + 1;
 	}
 	const tr = tbody.insertRow(nRows);
-	const thCount = $$('th').length;
+	const thCount = $$('#data-table th').length;
 	for (let i = 0; i < thCount; i++) {
 		const td = tr.insertCell(i);
 		if (i === 0) {
@@ -76,7 +76,7 @@ function parseData() {
 
 	if (invalidData) data.length = 0;
 	else {
-		sleep(1000).then(() =>{ 
+		sleep(1000).then(() => {
 			logger('INFO: ', 'Done processing data')
 			toggle('#calc', 'disabled', false);
 			toggle('#add', 'disabled', true);
@@ -98,7 +98,9 @@ function calculate() {
 		logText = 'Measuring correlation between data sets';
 		let r = getSampleCorrelationCoefficient(data);
 		let degree = getDegreeOfCorrelation(r);
-		print(degree);
+		$('#findings').innerText = degree;
+		populateResultsTable(data, r);
+		css($('#results'), { display: 'block' });
 	}
 	logger(logLevel, logText);
 

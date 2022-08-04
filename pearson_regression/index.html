@@ -69,14 +69,68 @@
 		<div id="right-container">
 			<fieldset id="output-panel">
 				<legend>Output Panel</legend>
-				<div id="results">
-					<h3 id="findings"></h3>
-					<fieldset id="graphs">
-						<legend>Charts</legend>
-					</fieldset>
-					<fieldset id="stats">
-						<legend>Statistics</legend>
-					</fieldset>
+				<div id="results" style="display: none;">
+					<h2 id="findings"></h2>
+					<div id="visualizations">
+						<fieldset id="graphs">
+							<legend>Charts</legend>
+						</fieldset>
+						<fieldset id="stats">
+							<legend>Statistics</legend>
+							<table id="stats-table" border="1px solid black">
+								<thead>
+									<tr>
+										<th></th>
+										<th>x</th>
+										<th>y</th>
+									</tr>
+								</thead>
+								<tbody style="color: black;">
+									<tr title="Sample size">
+										<th>n</th>
+										<td id="nx"></td>
+										<td id="ny"></td>
+									</tr>
+									<tr title="Mean">
+										<th>&mu;</th>
+										<td id="mux"></td>
+										<td id="muy"></td>
+									</tr>
+									<tr title="Standard deviation">
+										<th>&sigma;</th>
+										<td id="sdx"></td>
+										<td id="sdy"></td>
+									</tr>
+									<tr title="Standard error of mean">
+										<th>&sigma;<sub>&mu;</sub></th>
+										<td id="semx"></td>
+										<td id="semy"></td>
+									</tr>
+									<tr title="Error margin">
+										<th>E</th>
+										<td id="Ex"></td>
+										<td id="Ey"></td>
+									</tr>
+									<tr title="Standard error">
+										<th>&sigma;<sub>E</sub></th>
+										<td id="se" colspan="2"></td>
+									</tr>
+									<tr title="Critical t-value">
+										<th>t<sub>c</sub></th>
+										<td id="tc" colspan="2"></td>
+									</tr>
+									<tr title="Degrees of freedom">
+										<th>DoF</th>
+										<td id="dof" colspan="2"></td>
+									</tr>
+									<tr title="Pearson Coefficient">
+										<th>r<sub>xy</sub></th>
+										<td id="r" colspan="2"></td>
+									</tr>
+								</tbody>
+							</table>
+						</fieldset>
+					</div>
 				</div>
 			</fieldset>
 		</div>
