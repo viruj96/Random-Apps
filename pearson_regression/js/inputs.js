@@ -42,22 +42,14 @@ function importData() {
 
 function parseData() {
 	data.length = 0;
-	const textarea = $('#textarea');
 	const rows = $$('#data-table tbody tr');
 	const invalidRows = [];
 	let invalidData = false;
-	const p = create('p');
-	const span = create('span');
-	const text = document.createTextNode('');
-	const styles = {
-		color: 'black',
-		margin: '0 2%'
-	};
-	let color;
+	let logLevel;
+	let logText;
 	if (!rows || rows.length === 0) {
-		span.innerHTML = 'ERROR: ';
-		text.data = 'Add data before processing.';
-		color = 'red';
+		logLevel = 'ERROR: ';
+		logText = 'Add data before processing.';
 		invalidData = true;
 	} else {
 		rows.forEach(row => {
@@ -69,46 +61,55 @@ function parseData() {
 				}
 			});
 			if (invalidData) {
-				span.innerHTML = 'WARN: ';
-				text.data = `Delete empty rows before processing. Missing data in rows: ${invalidRows.filter(unique)}`;
-				color = 'darkorange';
+				logLevel = 'WARN: ';
+				logText = `Delete empty rows before processing. Missing data in rows: ${invalidRows.filter(unique)}`;
 			} else {
-				span.innerHTML = 'INFO: ';
-				text.data = 'Processing data...';
-				color = 'blue';
-				let x = inputs[0].value;
-				let y = inputs[1].value
-				if (inputs[0].type === 'number')
-					x = parseInt(x);
-				if (inputs[1].type === 'number')
-					y = parseInt(y);
+				logLevel = 'INFO: ';
+				logText = 'Processing data...';
+				let x = parseInt(inputs[0].value);
+				let y = parseInt(inputs[1].value);
 				data.push({ x, y });
 			}
 		});
 	}
-	css(span, { color });
-	css(p, styles);
-	p.appendChild(span);
-	p.appendChild(text);
-	textarea.appendChild(p);
+	logger(logLevel, logText);
 
 	if (invalidData) data.length = 0;
 	else {
-		toggle('#calc', 'disabled', false);
-		toggle('#add', 'disabled', true);
-		toggle('#delete', 'disabled', true);
-		toggle('#validate', 'disabled', true);
-		sleep(1000).then(() => {
-			const doneMessage = p.cloneNode(true);
-			doneMessage.childNodes[1].data = 'Done processing data';
-			textarea.appendChild(doneMessage);
+		sleep(1000).then(() =>{ 
+			logger('INFO: ', 'Done processing data')
+			toggle('#calc', 'disabled', false);
+			toggle('#add', 'disabled', true);
+			toggle('#delete', 'disabled', true);
+			toggle('#validate', 'disabled', true);
 		});
 	}
 }
 
 function calculate() {
-	const textarea = $('#textarea');
 	const rows = $$('#data-table tbody tr');
+	let logLevel;
+	let logText;
+	if (rows.length === 1) {
+		logLevel = 'WARN: ';
+		logText = 'Not enough data. Must have at least 2 records to calculate coefficient';
+	} else {
+		logLevel = 'INFO: ';
+		logText = 'Measuring correlation between data sets';
+		let r = getSampleCorrelationCoefficient(data);
+		let degree = getDegreeOfCorrelation(r);
+		print(degree);
+	}
+	logger(logLevel, logText);
+
+	toggle('#calc', 'disabled', true);
+	toggle('#add', 'disabled', false);
+	toggle('#delete', 'disabled', false);
+	toggle('#validate', 'disabled', false);
+}
+
+function logger(logLevel, logText) {
+	const textarea = $('#textarea');
 	const p = create('p');
 	const span = create('span');
 	const text = document.createTextNode('');
@@ -117,19 +118,22 @@ function calculate() {
 		margin: '0 2%'
 	};
 	let color;
-	if (rows.length === 1) {
-		span.innerHTML = 'WARN: ';
-		text.data = 'Not enough data. Must have at least 2 records to calculate coefficient';
-		color = 'darkorange';
+	switch (logLevel) {
+		case 'INFO: ':
+			color = 'blue';
+			break;
+		case 'WARN: ':
+			color = 'darkorange';
+			break;
+		case 'ERROR: ':
+			color = 'red';
+			break;
 	}
+	span.innerHTML = logLevel;
+	text.data = logText;
 	css(span, { color });
 	css(p, styles);
 	p.appendChild(span);
 	p.appendChild(text);
 	textarea.appendChild(p);
-
-	toggle('#calc', 'disabled', true);
-	toggle('#add', 'disabled', false);
-	toggle('#delete', 'disabled', false);
-	toggle('#validate', 'disabled', false);
 }

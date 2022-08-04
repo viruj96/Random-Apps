@@ -19,3 +19,8 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
 const unique = (value, index, self) => self.indexOf(value) === index;
+const average = (array) => array.reduce((a, b) => a + b) / array.length;
+const sd = (array) => { // standard deviation of array of numbers
+	const mean = average(array);
+	return Math.sqrt(array.map(val => Math.pow(val - mean, 2)).reduce((a, b) => a + b) / (array.length - 1));
+};

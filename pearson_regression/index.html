@@ -11,8 +11,13 @@
 	<link rel="stylesheet" href="./css/input-panel.css" />
 	<link rel="stylesheet" href="./css/output-panel.css" />
 	<script src="./js/helper.js"></script>
+	<script src="./js/output.js"></script>
 	<script src="./js/inputs.js"></script>
 	<script defer src="./js/listeners.js"></script>
+	
+	<!-- Chartist CDN -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" />
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 </head>
 
 <body>
@@ -47,7 +52,7 @@
 							<button id="delete" onclick="deleteRow()" disabled>Delete Row(s)</button>
 						</div>
 						<div>
-							<button id="validate" onclick="parseData()">Process Data</button>
+							<button id="validate" onclick="parseData()" disabled>Process Data</button>
 							<button id="calc" onclick="calculate()" disabled>Calculate</button>
 						</div>
 					</div>
@@ -64,6 +69,15 @@
 		<div id="right-container">
 			<fieldset id="output-panel">
 				<legend>Output Panel</legend>
+				<div id="results">
+					<h3 id="findings"></h3>
+					<fieldset id="graphs">
+						<legend>Charts</legend>
+					</fieldset>
+					<fieldset id="stats">
+						<legend>Statistics</legend>
+					</fieldset>
+				</div>
 			</fieldset>
 		</div>
 	</div>

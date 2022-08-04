@@ -1,16 +1,24 @@
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-const observer = new MutationObserver(() => {
-	const rows = $$('#data-table tbody tr');
-	if (!rows || rows.length === 0) {
-		toggle('#delete', 'disabled', true);
-		toggle('#validate', 'disabled', true);
-	}
-	else {
-		toggle('#delete', 'disabled', false);
-		toggle('#validate', 'disabled', false);
+const observer = new MutationObserver((mutation) => {
+	if (mutation[0].target === $('#data-table tbody')) {
+		$('#input-table').scrollTop = $('#input-table').scrollHeight;
+		const rows = $$('#data-table tbody tr');
+		if (!rows || rows.length === 0) {
+			toggle('#delete', 'disabled', true);
+			toggle('#validate', 'disabled', true);
+		}
+		else {
+			toggle('#delete', 'disabled', false);
+			toggle('#validate', 'disabled', false);
+		}
+	} else if (mutation[0].target === $('#textarea')) {
+		$('#textarea').scrollTop = $('#textarea').scrollHeight;
 	}
 });
 observer.observe($('#data-table tbody'), {
+	childList: true
+});
+observer.observe($('#textarea'), {
 	childList: true
 });
 
