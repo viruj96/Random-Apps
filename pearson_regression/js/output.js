@@ -60,24 +60,101 @@ function populateResultsTable(data, r) {
 	$('#r').innerText = r.toFixed(2);
 }
 
+function correlation(slope, c, r) {
+	const fieldset = $('#best-fit');
+	fieldset.appendChild(document.createTextNode(`Coefficient: ${r.toFixed(4)}`));
+	fieldset.appendChild(create('br'));
+	fieldset.appendChild(document.createTextNode(`Slope: ${slope.toFixed(4)}`));
+	fieldset.appendChild(create('br'));
+	fieldset.appendChild(document.createTextNode(`y-intercept: ${c.toFixed(4)}`));
+	fieldset.appendChild(create('br'));
+	fieldset.appendChild(create('br'));
+	fieldset.appendChild(document.createTextNode('Line of best fit equation:'))
+	fieldset.appendChild(create('br'));
+	fieldset.appendChild(document.createTextNode(`Y = ${slope.toFixed(2)}X + ${c.toFixed(2)}`));
+}
+
+function lineOfBestFit(data, r) {
+	const meanX = average(data.map(d => d.x));
+	const meanY = average(data.map(d => d.y));
+
+	const slope = data.map(d => (d.x - meanX) * (d.y - meanY)).reduce((a, b) => a + b) / data.map(d => Math.pow(d.x - meanX, 2)).reduce((a, b) => a + b);
+	const c = meanY - slope * meanX;
+
+	correlation(slope, c, r);
+
+	const bestFit = data.map(d => slope * d.x + c);
+	return bestFit;
+}
+
 // Plots
-function plotGraph(dataPoints, selector) {
-	const data = {
-		labels: dataPoints.map(d => d.x),
-		series: [{
-			name: 'data',
-			data: dataPoints.map(d => d.y)
-		}]
+function plotGraph(dataPoints, selector, r) {
+	const data1 = {
+		x: dataPoints.map(d => d.x),
+		y: dataPoints.map(d => d.y),
+		mode: 'markers',
+		type: 'scatter',
+		name: 'Data',
+		marker: {
+			color: 'green',
+			size: 10
+		}
 	};
-	const options = {
-		fullWidth: true,
-		series: {
-			data: {
-				showLine: false,
-			}
+	const data2 = {
+		x: dataPoints.map(d => d.x),
+		y: lineOfBestFit(dataPoints, r),
+		mode: 'lines+markers',
+		type: 'lines',
+		name: 'Best fit',
+		marker: {
+			size: 10
+		}
+	};
+	const data = [data1, data2];
+	const layout = {
+		width: '100%',
+		plot_bgcolor: "black",
+		paper_bgcolor: "#FFF3",
+		xaxis: {
+			title: {
+				text: 'x',
+				font: {
+					family: 'Courier New, monospace',
+					size: 18,
+					color: '#ffffff'
+				}
+			},
+			showgrid: true,
+			zeroline: true,
+			showline: true,
+			mirror: 'ticks',
+			gridcolor: '#bdbdbd',
+			gridwidth: 1,
+			zerolinecolor: '#969696',
+			zerolinewidth: 2,
+			linecolor: '#636363',
+			linewidth: 1
 		},
-		onlyInteger: true,
-		low: 0
+		yaxis: {
+			title: {
+				text: 'y',
+				font: {
+					family: 'Courier New, monospace',
+					size: 18,
+					color: '#ffffff'
+				}
+			},
+			showgrid: true,
+			zeroline: true,
+			showline: true,
+			mirror: 'ticks',
+			gridcolor: '#bdbdbd',
+			gridwidth: 1,
+			zerolinecolor: '#969696',
+			zerolinewidth: 2,
+			linecolor: '#636363',
+			linewidth: 1
+		}
 	};
-	return new Chartist.Line(selector, data, options);
+	Plotly.newPlot(selector, data, layout);
 }

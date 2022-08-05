@@ -101,12 +101,12 @@ function calculate() {
 	} else {
 		logLevel = 'INFO: ';
 		logText = 'Measuring correlation between data sets';
-		let r = getSampleCorrelationCoefficient(data);
-		let degree = getDegreeOfCorrelation(r);
+		const r = getSampleCorrelationCoefficient(data);
+		const degree = getDegreeOfCorrelation(r);
 		$('#findings').innerText = degree;
 		populateResultsTable(data, r);
 		css($('#results'), { display: 'block' });
-		plotGraph(data, '#chart');
+		plotGraph(data, 'chart', r);
 	}
 	logger(logLevel, logText);
 

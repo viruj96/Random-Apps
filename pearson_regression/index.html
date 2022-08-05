@@ -15,9 +15,8 @@
 	<script src="./js/inputs.js"></script>
 	<script defer src="./js/listeners.js"></script>
 	
-	<!-- Chartist CDN -->
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" />
-    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+	<!-- Plotly CDN -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.13.3/plotly-basic.min.js" integrity="sha512-HyCVF3HVLIHzkyQmUY5qKJ/Mmah0Icyui62heZsAMGjxAFyIHwOTE6yDt0dYX+YhwRquYrk+NfIgUOulm75FfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -76,61 +75,66 @@
 							<legend>Charts</legend>
 							<div id="chart" style="height: 100%;"></div>
 						</fieldset>
-						<fieldset id="stats">
-							<legend>Statistics</legend>
-							<table id="stats-table" border="1px solid black">
-								<thead>
-									<tr>
-										<th></th>
-										<th>x</th>
-										<th>y</th>
-									</tr>
-								</thead>
-								<tbody style="color: black;">
-									<tr title="Sample size">
-										<th>n</th>
-										<td id="nx"></td>
-										<td id="ny"></td>
-									</tr>
-									<tr title="Mean">
-										<th>&mu;</th>
-										<td id="mux"></td>
-										<td id="muy"></td>
-									</tr>
-									<tr title="Standard deviation">
-										<th>&sigma;</th>
-										<td id="sdx"></td>
-										<td id="sdy"></td>
-									</tr>
-									<tr title="Standard error of mean">
-										<th>&sigma;<sub>&mu;</sub></th>
-										<td id="semx"></td>
-										<td id="semy"></td>
-									</tr>
-									<tr title="Error margin">
-										<th>E</th>
-										<td id="Ex"></td>
-										<td id="Ey"></td>
-									</tr>
-									<tr title="Standard error">
-										<th>&sigma;<sub>E</sub></th>
-										<td id="se" colspan="2"></td>
-									</tr>
-									<tr title="Critical t-value">
-										<th>t<sub>c</sub></th>
-										<td id="tc" colspan="2"></td>
-									</tr>
-									<tr title="Degrees of freedom">
-										<th>DoF</th>
-										<td id="dof" colspan="2"></td>
-									</tr>
-									<tr title="Pearson Coefficient">
-										<th>r<sub>xy</sub></th>
-										<td id="r" colspan="2"></td>
-									</tr>
-								</tbody>
-							</table>
-						</fieldset>
+						<div id="out-right">
+							<fieldset id="stats">
+								<legend>Statistics</legend>
+								<table id="stats-table" border="1px solid black">
+									<thead>
+										<tr>
+											<th></th>
+											<th>x</th>
+											<th>y</th>
+										</tr>
+									</thead>
+									<tbody style="color: black;">
+										<tr title="Sample size">
+											<th>n</th>
+											<td id="nx"></td>
+											<td id="ny"></td>
+										</tr>
+										<tr title="Mean">
+											<th>&mu;</th>
+											<td id="mux"></td>
+											<td id="muy"></td>
+										</tr>
+										<tr title="Standard deviation">
+											<th>&sigma;</th>
+											<td id="sdx"></td>
+											<td id="sdy"></td>
+										</tr>
+										<tr title="Standard error of mean">
+											<th>&sigma;<sub>&mu;</sub></th>
+											<td id="semx"></td>
+											<td id="semy"></td>
+										</tr>
+										<tr title="Error margin">
+											<th>E</th>
+											<td id="Ex"></td>
+											<td id="Ey"></td>
+										</tr>
+										<tr title="Standard error">
+											<th>&sigma;<sub>E</sub></th>
+											<td id="se" colspan="2"></td>
+										</tr>
+										<tr title="Critical t-value">
+											<th>t<sub>c</sub></th>
+											<td id="tc" colspan="2"></td>
+										</tr>
+										<tr title="Degrees of freedom">
+											<th>DoF</th>
+											<td id="dof" colspan="2"></td>
+										</tr>
+										<tr title="Pearson Coefficient">
+											<th>r<sub>xy</sub></th>
+											<td id="r" colspan="2"></td>
+										</tr>
+									</tbody>
+								</table>
+							</fieldset>
+							<fieldset id="best-fit">
+								<legend>Pearson Correlation</legend>
+							</fieldset>
+						</div>
 					</div>
 				</div>
 			</fieldset>

@@ -26,9 +26,11 @@
 	width: 100%;
 }
 
-#stats {
-	width: 30%
+#chart {
+	height: 100%;
+	width: 100%;
 }
+
 
 #stats-table tbody tr {
 	cursor: default;
