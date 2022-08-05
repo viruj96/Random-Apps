@@ -55,9 +55,29 @@ function populateResultsTable(data, r) {
 
 	$('#se').innerText = se(x, y).toFixed(2);
 	$('#tc').innerText = t(x, y).toFixed(2);
-	$('#dof').innerText = dof(x, y).toFixed(2);
+	$('#dof').innerText = dof(x, y);
 
 	$('#r').innerText = r.toFixed(2);
 }
 
 // Plots
+function plotGraph(dataPoints, selector) {
+	const data = {
+		labels: dataPoints.map(d => d.x),
+		series: [{
+			name: 'data',
+			data: dataPoints.map(d => d.y)
+		}]
+	};
+	const options = {
+		fullWidth: true,
+		series: {
+			data: {
+				showLine: false,
+			}
+		},
+		onlyInteger: true,
+		low: 0
+	};
+	return new Chartist.Line(selector, data, options);
+}

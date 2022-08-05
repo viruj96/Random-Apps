@@ -76,6 +76,11 @@ function parseData() {
 
 	if (invalidData) data.length = 0;
 	else {
+		data.sort((a, b) => {
+			if (a.x > b.x) return 1;
+			if (a.x < b.x) return -1;
+			else return 0;
+		});
 		sleep(1000).then(() => {
 			logger('INFO: ', 'Done processing data')
 			toggle('#calc', 'disabled', false);
@@ -101,6 +106,7 @@ function calculate() {
 		$('#findings').innerText = degree;
 		populateResultsTable(data, r);
 		css($('#results'), { display: 'block' });
+		plotGraph(data, '#chart');
 	}
 	logger(logLevel, logText);
 
