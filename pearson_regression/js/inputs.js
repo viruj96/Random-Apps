@@ -24,7 +24,7 @@ function addRow() {
 			td.appendChild(input);
 		}
 	}
-	on(tr, 'click', handleRowClick)
+	on(tr, 'click', handleRowClick);
 }
 
 function deleteRow() {
@@ -37,7 +37,32 @@ function importData() {
 	const path = $('#file-path').value;
 	if (!path) {
 		$('input[type=file]').click();
+		on($('input[type=file]'), 'change', readFile);
 	}
+}
+
+function populateTable(csvArray) {
+	const tbody = $('#data-table tbody');
+	removeChilds(tbody);
+	for (let i = 0; i < csvArray.length; i++) {
+		const tr = tbody.insertRow(i);
+		for (let j = 0; j < csvArray[i].length; j++) {
+			const td = tr.insertCell(j);
+			if (j === 0) {
+				tr.id = csvArray[i][j];
+				td.innerHTML = csvArray[i][j];
+			} else {
+				const input = create('input');
+				css(input, { 'background': 'transparent' });
+				input.setAttribute('type', 'number');
+				input.setAttribute('step', '0.01');
+				input.setAttribute('value', csvArray[i][j]);
+				td.appendChild(input);
+			}
+		}
+		on(tr, 'click', handleRowClick);
+	}
+	logger('INFO: ', 'Imported data from csv')
 }
 
 function parseData() {

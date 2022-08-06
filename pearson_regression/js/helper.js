@@ -14,6 +14,11 @@ const css = (element, styleObject) => {
 	element.style.cssText = cssText;
 };
 const on = (element, event, callback) => element.addEventListener(event, callback);
+const removeChilds = (parent) => {
+	while (parent.lastChild) {
+		parent.removeChild(parent.lastChild);
+	}
+};
 
 // JavaScript helpers
 const print = (...args) => console.log(args.reduce((acc, cur) => `${acc} ${cur}`));
@@ -22,6 +27,18 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 // Arrays
 const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
 const unique = (value, index, self) => self.indexOf(value) === index;
+
+const csvToArray = (csv) => {
+	var resultArray = [];
+	csv.split("\n").forEach((row, i) => {
+		var rowArray = [i + 1];
+		row.split(",").forEach((cell) => {
+			rowArray.push(cell);
+		});
+		resultArray.push(rowArray);
+	});
+	return resultArray;
+};
 
 // Statistics
 const average = (array) => array.reduce((a, b) => a + b) / array.length;

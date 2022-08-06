@@ -46,3 +46,13 @@ function handleRowClick(e) {
 		addClass(this, 'highlighted');
 	}
 }
+
+function readFile(e) {
+	const reader = new FileReader();
+	$('#file-path').value = e.srcElement.files[0].name;
+	reader.onload = () => {
+		const csvArray = csvToArray(reader.result);
+		populateTable(csvArray);
+	};
+	reader.readAsText(e.srcElement.files[0]);
+}
